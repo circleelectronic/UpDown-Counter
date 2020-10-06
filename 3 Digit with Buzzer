@@ -1,0 +1,225 @@
+const int dispA = 2;
+const int dispB = 3;
+const int dispC = 4;
+const int dispD = 5;
+const int dispE = 6;
+const int dispF = 7;
+const int dispG = 8;
+
+const int com1 = 9;
+const int com10 = 10;
+const int com100 = 11;
+
+const int buzzer = 12;
+
+const int btnUp = A0;
+const int btnDown = A1;
+
+
+void setup() {
+  showNumber(0);
+
+  pinMode(dispA, OUTPUT);
+  pinMode(dispB, OUTPUT);
+  pinMode(dispC, OUTPUT);
+  pinMode(dispD, OUTPUT);
+  pinMode(dispE, OUTPUT);
+  pinMode(dispF, OUTPUT);
+  pinMode(dispG, OUTPUT);
+
+  pinMode(buzzer, OUTPUT);
+  
+  pinMode(com1, OUTPUT);
+  pinMode(com10, OUTPUT);
+  pinMode(com100, OUTPUT);
+
+  pinMode(btnUp, INPUT_PULLUP);
+  pinMode(btnDown, INPUT_PULLUP);
+}
+
+int numberValue = 0;
+char statusBtnUp = '1';
+char statusBtnDown = '1';
+
+void loop() {
+
+  if (statusBtnUp == '1' && digitalRead(btnUp) == LOW) { 
+    statusBtnUp = '0';
+    digitalWrite(buzzer, HIGH);
+    delay(100);
+    digitalWrite(buzzer, LOW);
+    if (numberValue < 100) {
+      numberValue++;
+    }
+  } else if (statusBtnUp == '0' && digitalRead(btnUp) == HIGH) { 
+    statusBtnUp = '1';
+  }
+
+  if (statusBtnDown == '1' && digitalRead(btnDown) == LOW) { 
+    statusBtnDown = '0';
+    digitalWrite(buzzer, HIGH);
+    delay(100);
+    digitalWrite(buzzer, LOW);
+    if (numberValue > 0)numberValue--;
+  } else if (statusBtnDown == '0' && digitalRead(btnDown) == HIGH) { 
+    statusBtnDown = '1';
+  }
+  showNumber(numberValue);
+}
+
+void showNumber(int number) {
+  int ones = number % 10;
+  selectDigit(1);
+  showDigit(ones);
+  delay(1);
+
+  int tens = number / 10;
+  selectDigit(10);
+  showDigit(tens);
+  delay(1);
+
+  int hundreds = number / 100;
+  selectDigit(100);
+  showDigit(hundreds);
+  delay(1);
+}
+
+
+
+void selectDigit(int selectedDigit) {
+  showDigit(-1);
+  delay(1);
+  switch (selectedDigit) {
+    case 1:
+      digitalWrite(com1, HIGH);
+      digitalWrite(com10, LOW);
+      digitalWrite(com100, LOW);
+      break;
+    case 10:
+      digitalWrite(com1, LOW);
+      digitalWrite(com10, HIGH);
+      digitalWrite(com100, LOW);
+      break;
+    case 100:
+      digitalWrite(com1, LOW);
+      digitalWrite(com10, LOW);
+      digitalWrite(com100, HIGH);
+      break;
+    default:
+      digitalWrite(com1, LOW);
+      digitalWrite(com10, LOW);
+      digitalWrite(com100, LOW);
+  }
+}
+
+void showDigit(int digit) {
+  switch (digit) {
+    case 0:
+      digitalWrite(dispA, HIGH);
+      digitalWrite(dispB, HIGH);
+      digitalWrite(dispC, HIGH);
+      digitalWrite(dispD, HIGH);
+      digitalWrite(dispE, HIGH);
+      digitalWrite(dispF, HIGH);
+      digitalWrite(dispG, LOW);
+      break;
+    case 1:
+      digitalWrite(dispA, LOW);
+      digitalWrite(dispB, HIGH);
+      digitalWrite(dispC, HIGH);
+      digitalWrite(dispD, LOW);
+      digitalWrite(dispE, LOW);
+      digitalWrite(dispF, LOW);
+      digitalWrite(dispG, LOW);
+      break;
+    case 2:
+      digitalWrite(dispA, HIGH);
+      digitalWrite(dispB, HIGH);
+      digitalWrite(dispC, LOW);
+      digitalWrite(dispD, HIGH);
+      digitalWrite(dispE, HIGH);
+      digitalWrite(dispF, LOW);
+      digitalWrite(dispG, HIGH);
+      break;
+    case 3:
+      digitalWrite(dispA, HIGH);
+      digitalWrite(dispB, HIGH);
+      digitalWrite(dispC, HIGH);
+      digitalWrite(dispD, HIGH);
+      digitalWrite(dispE, LOW);
+      digitalWrite(dispF, LOW);
+      digitalWrite(dispG, HIGH);
+      break;
+    case 4:
+      digitalWrite(dispA, LOW);
+      digitalWrite(dispB, HIGH);
+      digitalWrite(dispC, HIGH);
+      digitalWrite(dispD, LOW);
+      digitalWrite(dispE, LOW);
+      digitalWrite(dispF, HIGH);
+      digitalWrite(dispG, HIGH);
+      break;
+    case 5:
+      digitalWrite(dispA, HIGH);
+      digitalWrite(dispB, LOW);
+      digitalWrite(dispC, HIGH);
+      digitalWrite(dispD, HIGH);
+      digitalWrite(dispE, LOW);
+      digitalWrite(dispF, HIGH);
+      digitalWrite(dispG, HIGH);
+      break;
+    case 6:
+      digitalWrite(dispA, HIGH);
+      digitalWrite(dispB, LOW);
+      digitalWrite(dispC, HIGH);
+      digitalWrite(dispD, HIGH);
+      digitalWrite(dispE, HIGH);
+      digitalWrite(dispF, HIGH);
+      digitalWrite(dispG, HIGH);
+      break;
+    case 7:
+      digitalWrite(dispA, HIGH);
+      digitalWrite(dispB, HIGH);
+      digitalWrite(dispC, HIGH);
+      digitalWrite(dispD, LOW);
+      digitalWrite(dispE, LOW);
+      digitalWrite(dispF, LOW);
+      digitalWrite(dispG, LOW);
+      break;
+    case 8:
+      digitalWrite(dispA, HIGH);
+      digitalWrite(dispB, HIGH);
+      digitalWrite(dispC, HIGH);
+      digitalWrite(dispD, HIGH);
+      digitalWrite(dispE, HIGH);
+      digitalWrite(dispF, HIGH);
+      digitalWrite(dispG, HIGH);
+      break;
+    case 9:
+      digitalWrite(dispA, HIGH);
+      digitalWrite(dispB, HIGH);
+      digitalWrite(dispC, HIGH);
+      digitalWrite(dispD, HIGH);
+      digitalWrite(dispE, LOW);
+      digitalWrite(dispF, HIGH);
+      digitalWrite(dispG, HIGH);
+      break;
+    case 10:
+      digitalWrite(dispA, HIGH);
+      digitalWrite(dispB, HIGH);
+      digitalWrite(dispC, HIGH);
+      digitalWrite(dispD, HIGH);
+      digitalWrite(dispE, HIGH);
+      digitalWrite(dispF, HIGH);
+      digitalWrite(dispG, LOW);
+      break;
+    default:
+      digitalWrite(dispA, LOW);
+      digitalWrite(dispB, LOW);
+      digitalWrite(dispC, LOW);
+      digitalWrite(dispD, LOW);
+      digitalWrite(dispE, LOW);
+      digitalWrite(dispF, LOW);
+      digitalWrite(dispG, LOW);
+  }
+}
